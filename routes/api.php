@@ -30,7 +30,7 @@ Route::controller(BurgirController::class)->middleware('auth:sanctum')->group(fu
     Route::get('/burgir','index');
     Route::post('/burgir', 'store');
     Route::get('/burgir/{id}', 'show');
-    Route::put('/burgir/{id}', 'update');
+    Route::put('/burgir', 'update');
     Route::delete('/burgir/{id}', 'destroy');
 });
 

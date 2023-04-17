@@ -26,7 +26,19 @@ class BurgirController extends Controller
      */
     public function store(Request $request)
     {
-        Burgir::create($request->all());
+        $validated = $request->validate([
+            'name' => 'required|string',
+            'price' => 'required|int',
+        ]);
+        Burgir::create($validated);
+        return "burgir creada";
+        // $burgir = Burgir::find($validated['id']);
+        // if(!$burgir){
+        //     return "burgir no encontrada";
+        // }
+        // $burgir->update($validated);
+
+        // return response()->json($burgir, 200);
     }
 
     /**
@@ -37,8 +49,10 @@ class BurgirController extends Controller
      */
     public function show($id)
     {
-        $burgir = Burgir::findOrFail($id);
-
+        $burgir = Burgir::find($id);
+        if(!$burgir){
+            return "burgir no encontrada";
+        }
         return response()->json($burgir, 200);
     }
 
@@ -49,10 +63,19 @@ class BurgirController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        $burgir = Burgir::findOrFail($id);
-        $burgir->update($request->all());
+        //return $request;
+        $validated = $request->validate([
+            'id' => 'required|int',
+            'name' => 'string',
+            'price' => 'int',
+        ]);
+        $burgir = Burgir::find($validated['id']);
+        if(!$burgir){
+            return "burgir no encontrada";
+        }
+        $burgir->update($validated);
 
         return response()->json($burgir, 200);
     }
@@ -65,7 +88,10 @@ class BurgirController extends Controller
      */
     public function destroy($id)
     {
-        $burgir = Burgir::findOrFail($id);
+        $burgir = Burgir::find($id);
+        if(!$burgir){
+            return "burgir no encontrada";
+        }
         $burgir->delete();
 
         return response()->json(['message' => 'Burgir borrada'], 204);
