@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Burgir;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -36,18 +37,21 @@ class AuthController extends Controller
                 'email' => $request->email,
                 'password' => Hash::make($request->password)
             ]);
-
-            return response()->json([
-                'status' => true,
-                'message' => 'User Created Successfully',
-                'token' => $user->createToken("API TOKEN")->plainTextToken
-            ], 200);
+            // $burgers = Burgir::all();
+            // return view('dashboard')->with('burgers', $burgers);
+            return redirect('dashboard');
+            // return response()->json([
+            //     'status' => true,
+            //     'message' => 'User Created Successfully',
+            //     'token' => $user->createToken("API TOKEN")->plainTextToken
+            // ], 200);
 
         } catch (\Throwable $th) {
-            return response()->json([
-                'status' => false,
-                'message' => $th->getMessage()
-            ], 500);
+            return view('auth.register');
+            // return response()->json([
+            //     'status' => false,
+            //     'message' => $th->getMessage()
+            // ], 500);
         }
     }
 
@@ -81,18 +85,19 @@ class AuthController extends Controller
             }
 
             $user = User::where('email', $request->email)->first();
-
-            return response()->json([
-                'status' => true,
-                'message' => 'User Logged In Successfully',
-                'token' => $user->createToken("API TOKEN")->plainTextToken
-            ], 200);
+            return redirect('dashboard');
+            // return response()->json([
+            //     'status' => true,
+            //     'message' => 'User Logged In Successfully',
+            //     'token' => $user->createToken("API TOKEN")->plainTextToken
+            // ], 200);
 
         } catch (\Throwable $th) {
-            return response()->json([
-                'status' => false,
-                'message' => $th->getMessage()
-            ], 500);
+            return view('auth.login');
+            // return response()->json([
+            //     'status' => false,
+            //     'message' => $th->getMessage()
+            // ], 500);
         }
     }
 
